@@ -1,0 +1,23 @@
+{
+  "name": "keeperguard",
+  "version": "0.2.0",
+  "description": "Policy-gated KeeperHub execution starter with tamper-evident proof bundles",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/cli.js",
+    "demo": "node src/cli.js demo",
+    "doctor": "node src/cli.js doctor",
+    "serve": "node src/server.js",
+    "test": "node --test",
+    "deploy:check": "wrangler deploy --dry-run",
+    "deploy": "wrangler deploy"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^4.112.0"
+  }
+}

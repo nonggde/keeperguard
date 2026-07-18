@@ -1,0 +1,134 @@
+{
+  "schema": "keeperguard/evidence-v1",
+  "project": "KeeperGuard",
+  "runId": "b2434ba1-c6bd-4b4e-b7e2-169782152429",
+  "mode": "rehearsal",
+  "createdAt": "2026-07-18T13:06:34.389Z",
+  "intent": {
+    "chainId": 11155111,
+    "recipientAddress": "0x1111111111111111111111111111111111111111",
+    "amount": "0",
+    "purpose": "Prove the guarded KeeperHub execution path without moving value"
+  },
+  "chain": {
+    "chainId": 11155111,
+    "name": "Ethereum Sepolia",
+    "symbol": "ETH",
+    "explorerUrl": "https://sepolia.etherscan.io",
+    "isTestnet": true,
+    "isEnabled": true
+  },
+  "policyDecision": {
+    "approved": true,
+    "reasons": [],
+    "constraints": {
+      "allowedChainIds": [
+        11155111,
+        84532
+      ],
+      "allowMainnet": false,
+      "maxNativeAmount": "0",
+      "recipientAllowlist": [],
+      "requirePurpose": true,
+      "requireSimulation": true
+    }
+  },
+  "events": [
+    {
+      "sequence": 1,
+      "at": "2026-07-18T13:06:34.389Z",
+      "type": "intent_received",
+      "data": {
+        "chainId": 11155111,
+        "recipientAddress": "0x1111111111111111111111111111111111111111",
+        "amount": "0",
+        "purpose": "Prove the guarded KeeperHub execution path without moving value"
+      },
+      "previousDigest": null,
+      "digest": "2c4caca4cf4501cf986c12676900ce059ac73c132f662019e9b78093d28013f5"
+    },
+    {
+      "sequence": 2,
+      "at": "2026-07-18T13:06:34.390Z",
+      "type": "chain_resolved",
+      "data": {
+        "chainId": 11155111,
+        "name": "Ethereum Sepolia",
+        "symbol": "ETH",
+        "explorerUrl": "https://sepolia.etherscan.io",
+        "isTestnet": true,
+        "isEnabled": true
+      },
+      "previousDigest": "2c4caca4cf4501cf986c12676900ce059ac73c132f662019e9b78093d28013f5",
+      "digest": "493f47a8192e9a603ee6a8e6d0db28dd60465403a58b48d2d900794466ea9860"
+    },
+    {
+      "sequence": 3,
+      "at": "2026-07-18T13:06:34.390Z",
+      "type": "policy_evaluated",
+      "data": {
+        "approved": true,
+        "reasons": [],
+        "constraints": {
+          "allowedChainIds": [
+            11155111,
+            84532
+          ],
+          "allowMainnet": false,
+          "maxNativeAmount": "0",
+          "recipientAllowlist": [],
+          "requirePurpose": true,
+          "requireSimulation": true
+        }
+      },
+      "previousDigest": "493f47a8192e9a603ee6a8e6d0db28dd60465403a58b48d2d900794466ea9860",
+      "digest": "da6fca8edea04108af1e8a456c6754eb00bc286f89d8b87a107571b1c9e4a4b3"
+    },
+    {
+      "sequence": 4,
+      "at": "2026-07-18T13:06:34.390Z",
+      "type": "keeperhub_simulated",
+      "data": {
+        "success": true,
+        "status": "simulated",
+        "from": "rehearsal-only",
+        "to": "0x1111111111111111111111111111111111111111",
+        "value": "0",
+        "gasEstimate": "21000",
+        "simulatedReturnValue": null,
+        "wouldRevert": false,
+        "provenance": "deterministic-local-rehearsal"
+      },
+      "previousDigest": "da6fca8edea04108af1e8a456c6754eb00bc286f89d8b87a107571b1c9e4a4b3",
+      "digest": "23126ef5125a6e97a744fc20cb7a77d1270afa0222cee4f0c06f00b190d0b140"
+    },
+    {
+      "sequence": 5,
+      "at": "2026-07-18T13:06:34.391Z",
+      "type": "broadcast_withheld",
+      "data": {
+        "reason": "explicit_broadcast_flag_not_set"
+      },
+      "previousDigest": "23126ef5125a6e97a744fc20cb7a77d1270afa0222cee4f0c06f00b190d0b140",
+      "digest": "19d47de22ec28aba9747da9841af9e9ee13e597fcc27616e34acd7db64e6dac8"
+    }
+  ],
+  "conclusion": {
+    "state": "simulated",
+    "simulation": {
+      "success": true,
+      "status": "simulated",
+      "from": "rehearsal-only",
+      "to": "0x1111111111111111111111111111111111111111",
+      "value": "0",
+      "gasEstimate": "21000",
+      "simulatedReturnValue": null,
+      "wouldRevert": false,
+      "provenance": "deterministic-local-rehearsal"
+    },
+    "executionId": null,
+    "transactionHash": null,
+    "transactionLink": null
+  },
+  "artifactDigest": "86810d5fdd6ef2ba66ec83da0c97fa78fe8dce906aa039b47009511f55cf4071"
+}

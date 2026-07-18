@@ -1,0 +1,9 @@
+{
+  "allowedChainIds": [11155111, 84532],
+  "allowMainnet": false,
+  "maxNativeAmount": "0",
+  "recipientAllowlist": [],
+  "requirePurpose": true,
+  "requireSimulation": true,
+  "pollTimeoutMs": 120000
+}

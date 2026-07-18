@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="KeeperGuard tamper-evident execution proof console">
+    <title>KeeperGuard | Execution Proof</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="KeeperGuard home">
+        <span class="brand-mark" aria-hidden="true">KG</span>
+        <span>KeeperGuard</span>
+      </a>
+      <div class="topbar-actions">
+        <span class="mode-chip" id="mode-chip">NO EVIDENCE</span>
+        <label class="file-command" for="evidence-file">Open evidence</label>
+        <input id="evidence-file" type="file" accept="application/json,.json">
+      </div>
+    </header>
+
+    <main>
+      <section class="status-band" aria-live="polite">
+        <div class="status-copy">
+          <p class="eyebrow">Execution proof / KeeperHub</p>
+          <h1 id="verification-title">Evidence required</h1>
+          <p id="verification-detail">No proof bundle is loaded.</p>
+        </div>
+        <div class="seal" id="verification-seal" aria-label="Verification status">
+          <span class="seal-core">--</span>
+          <span class="seal-label">UNVERIFIED</span>
+        </div>
+      </section>
+
+      <section class="metric-grid" aria-label="Execution summary">
+        <div class="metric">
+          <span class="metric-label">Network</span>
+          <strong id="metric-chain">--</strong>
+          <small id="metric-chain-id">chain --</small>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Value moved</span>
+          <strong id="metric-amount">--</strong>
+          <small id="metric-asset">native asset</small>
+        </div>
+        <div class="metric">
+          <span class="metric-label">Execution</span>
+          <strong id="metric-state">--</strong>
+          <small id="metric-execution">not submitted</small>
+        </div>
+        <div class="metric metric-link">
+          <span class="metric-label">Onchain proof</span>
+          <a id="metric-transaction" rel="noreferrer" target="_blank">Not available</a>
+          <small id="metric-sponsored">sponsorship --</small>
+        </div>
+      </section>
+
+      <section class="digest-band">
+        <div>
+          <span class="section-label">Artifact digest / SHA-256</span>
+          <code id="artifact-digest">--</code>
+        </div>
+        <button id="copy-digest" type="button" disabled>Copy digest</button>
+      </section>
+
+      <section class="split-section">
+        <div class="intent-panel">
+          <div class="section-heading">
+            <span class="section-index">01</span>
+            <h2>Guard decision</h2>
+          </div>
+          <dl class="definition-grid" id="guard-decision">
+            <div><dt>Decision</dt><dd>--</dd></div>
+            <div><dt>Purpose</dt><dd>--</dd></div>
+            <div><dt>Recipient</dt><dd>--</dd></div>
+            <div><dt>Limit</dt><dd>--</dd></div>
+          </dl>
+        </div>
+        <div class="integrity-panel">
+          <div class="section-heading">
+            <span class="section-index">02</span>
+            <h2>Integrity checks</h2>
+          </div>
+          <ul class="check-list" id="integrity-checks">
+            <li><span>Artifact digest</span><b>WAITING</b></li>
+            <li><span>Event ordering</span><b>WAITING</b></li>
+            <li><span>Hash linkage</span><b>WAITING</b></li>
+            <li><span>Transaction claim</span><b>WAITING</b></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="timeline-section">
+        <div class="section-heading timeline-heading">
+          <span class="section-index">03</span>
+          <h2>Audit sequence</h2>
+          <span id="event-count">0 events</span>
+        </div>
+        <ol class="timeline" id="timeline">
+          <li class="empty-row">No events loaded.</li>
+        </ol>
+      </section>
+
+      <section class="raw-section">
+        <div class="section-heading">
+          <span class="section-index">04</span>
+          <h2>Raw proof</h2>
+          <button id="download-evidence" type="button" disabled>Download JSON</button>
+        </div>
+        <pre id="raw-evidence" tabindex="0">{}</pre>
+      </section>
+    </main>
+
+    <footer>
+      <span>KeeperGuard / evidence-v1</span>
+      <span>Policy before execution. Proof after execution.</span>
+    </footer>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
