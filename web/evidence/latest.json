@@ -1,12 +1,12 @@
 {
   "schema": "keeperguard/evidence-v1",
   "project": "KeeperGuard",
-  "runId": "b2434ba1-c6bd-4b4e-b7e2-169782152429",
-  "mode": "rehearsal",
-  "createdAt": "2026-07-18T13:06:34.389Z",
+  "runId": "05a87461-f8cc-4667-9677-3994eb1f25d0",
+  "mode": "live",
+  "createdAt": "2026-07-18T16:15:11.031Z",
   "intent": {
     "chainId": 11155111,
-    "recipientAddress": "0x1111111111111111111111111111111111111111",
+    "recipientAddress": "0x43ceab46a1f19c82352ea056c0487edb6e55b4d8",
     "amount": "0",
     "purpose": "Prove the guarded KeeperHub execution path without moving value"
   },
@@ -36,20 +36,20 @@
   "events": [
     {
       "sequence": 1,
-      "at": "2026-07-18T13:06:34.389Z",
+      "at": "2026-07-18T16:15:11.031Z",
       "type": "intent_received",
       "data": {
         "chainId": 11155111,
-        "recipientAddress": "0x1111111111111111111111111111111111111111",
+        "recipientAddress": "0x43ceab46a1f19c82352ea056c0487edb6e55b4d8",
         "amount": "0",
         "purpose": "Prove the guarded KeeperHub execution path without moving value"
       },
       "previousDigest": null,
-      "digest": "2c4caca4cf4501cf986c12676900ce059ac73c132f662019e9b78093d28013f5"
+      "digest": "c0f60bdd4bb82cfefda23e96536a55d38ef87cfad4a13e2cd2315ec20e540108"
     },
     {
       "sequence": 2,
-      "at": "2026-07-18T13:06:34.390Z",
+      "at": "2026-07-18T16:15:12.671Z",
       "type": "chain_resolved",
       "data": {
         "chainId": 11155111,
@@ -59,12 +59,12 @@
         "isTestnet": true,
         "isEnabled": true
       },
-      "previousDigest": "2c4caca4cf4501cf986c12676900ce059ac73c132f662019e9b78093d28013f5",
-      "digest": "493f47a8192e9a603ee6a8e6d0db28dd60465403a58b48d2d900794466ea9860"
+      "previousDigest": "c0f60bdd4bb82cfefda23e96536a55d38ef87cfad4a13e2cd2315ec20e540108",
+      "digest": "bd255a826fc8f5fc9ac6a1003fd22e5de9db6ca993f26e2fec98cbdfdc3886ab"
     },
     {
       "sequence": 3,
-      "at": "2026-07-18T13:06:34.390Z",
+      "at": "2026-07-18T16:15:12.671Z",
       "type": "policy_evaluated",
       "data": {
         "approved": true,
@@ -81,54 +81,111 @@
           "requireSimulation": true
         }
       },
-      "previousDigest": "493f47a8192e9a603ee6a8e6d0db28dd60465403a58b48d2d900794466ea9860",
-      "digest": "da6fca8edea04108af1e8a456c6754eb00bc286f89d8b87a107571b1c9e4a4b3"
+      "previousDigest": "bd255a826fc8f5fc9ac6a1003fd22e5de9db6ca993f26e2fec98cbdfdc3886ab",
+      "digest": "e89a0d944d29b9c5d127cabf485626a982fa741d6db1e48b442ffddd7c610e77"
     },
     {
       "sequence": 4,
-      "at": "2026-07-18T13:06:34.390Z",
+      "at": "2026-07-18T16:15:14.072Z",
       "type": "keeperhub_simulated",
       "data": {
         "success": true,
         "status": "simulated",
-        "from": "rehearsal-only",
-        "to": "0x1111111111111111111111111111111111111111",
+        "from": "0x43ceab46a1f19c82352ea056c0487edb6e55b4d8",
+        "to": "0x43ceab46a1f19c82352ea056c0487edb6e55b4d8",
         "value": "0",
         "gasEstimate": "21000",
         "simulatedReturnValue": null,
-        "wouldRevert": false,
-        "provenance": "deterministic-local-rehearsal"
+        "wouldRevert": false
       },
-      "previousDigest": "da6fca8edea04108af1e8a456c6754eb00bc286f89d8b87a107571b1c9e4a4b3",
-      "digest": "23126ef5125a6e97a744fc20cb7a77d1270afa0222cee4f0c06f00b190d0b140"
+      "previousDigest": "e89a0d944d29b9c5d127cabf485626a982fa741d6db1e48b442ffddd7c610e77",
+      "digest": "e9011280ffe104960afdc391459f0d75bf28025de1ccd2c3ae4dc6e8732d197e"
     },
     {
       "sequence": 5,
-      "at": "2026-07-18T13:06:34.391Z",
-      "type": "broadcast_withheld",
+      "at": "2026-07-18T16:15:14.072Z",
+      "type": "broadcast_authorized",
       "data": {
-        "reason": "explicit_broadcast_flag_not_set"
+        "idempotencyKey": "kg-df5c589f312e93797ca3eb5a35de67dd7e55b002"
       },
-      "previousDigest": "23126ef5125a6e97a744fc20cb7a77d1270afa0222cee4f0c06f00b190d0b140",
-      "digest": "19d47de22ec28aba9747da9841af9e9ee13e597fcc27616e34acd7db64e6dac8"
+      "previousDigest": "e9011280ffe104960afdc391459f0d75bf28025de1ccd2c3ae4dc6e8732d197e",
+      "digest": "8a38c0ee5e19e78b5c3d174900fa48e7fac62bf86e66ab6580511c507e97e5fe"
+    },
+    {
+      "sequence": 6,
+      "at": "2026-07-18T16:15:26.966Z",
+      "type": "keeperhub_submitted",
+      "data": {
+        "executionId": "unv7thoamuzxa7iodg5im",
+        "status": "completed"
+      },
+      "previousDigest": "8a38c0ee5e19e78b5c3d174900fa48e7fac62bf86e66ab6580511c507e97e5fe",
+      "digest": "32c4b3c35440e99418cbc14765ac013774c6935d5c5ffb746ec370377a77ea1e"
+    },
+    {
+      "sequence": 7,
+      "at": "2026-07-18T16:15:30.093Z",
+      "type": "keeperhub_polled",
+      "data": {
+        "attempt": 1,
+        "status": "completed",
+        "transactionHash": "0x873b3c71e7d5ef5d1b190df9119fc07e370d2a1a2a83a40d5ad87dd0465e6637"
+      },
+      "previousDigest": "32c4b3c35440e99418cbc14765ac013774c6935d5c5ffb746ec370377a77ea1e",
+      "digest": "af55c5e28ce0356a116ab02bcb7e431b2a8568a15042b5621265c22b8902be5e"
+    },
+    {
+      "sequence": 8,
+      "at": "2026-07-18T16:15:30.093Z",
+      "type": "keeperhub_reconciled",
+      "data": {
+        "executionId": "unv7thoamuzxa7iodg5im",
+        "status": "completed",
+        "type": "transfer",
+        "transactionHash": "0x873b3c71e7d5ef5d1b190df9119fc07e370d2a1a2a83a40d5ad87dd0465e6637",
+        "transactionLink": "https://sepolia.etherscan.io/tx/0x873b3c71e7d5ef5d1b190df9119fc07e370d2a1a2a83a40d5ad87dd0465e6637",
+        "gasUsedWei": "80521",
+        "error": null,
+        "createdAt": "2026-07-18T16:15:15.195Z",
+        "completedAt": "2026-07-18T16:15:26.361Z"
+      },
+      "previousDigest": "af55c5e28ce0356a116ab02bcb7e431b2a8568a15042b5621265c22b8902be5e",
+      "digest": "0a1adb6f0176af1007d2e9b6cb0398bfc53d1925af466e811d51fd192222e5bd"
+    },
+    {
+      "sequence": 9,
+      "at": "2026-07-18T16:26:50.748Z",
+      "type": "keeperhub_status_confirmed",
+      "data": {
+        "executionId": "unv7thoamuzxa7iodg5im",
+        "status": "completed",
+        "type": "transfer",
+        "sponsored": true,
+        "transactionHash": "0x873b3c71e7d5ef5d1b190df9119fc07e370d2a1a2a83a40d5ad87dd0465e6637",
+        "transactionLink": "https://sepolia.etherscan.io/tx/0x873b3c71e7d5ef5d1b190df9119fc07e370d2a1a2a83a40d5ad87dd0465e6637",
+        "gasUsedUnits": "80521",
+        "gasUsedWei": "80521",
+        "gasPriceWei": "1092643469",
+        "retryCount": 0,
+        "error": null,
+        "createdAt": "2026-07-18T16:15:15.195Z",
+        "completedAt": "2026-07-18T16:15:26.361Z"
+      },
+      "previousDigest": "0a1adb6f0176af1007d2e9b6cb0398bfc53d1925af466e811d51fd192222e5bd",
+      "digest": "1808504239373100bbbba241f5742d9913ceaa2e968bc5257f0ad21d99a336bd"
     }
   ],
   "conclusion": {
-    "state": "simulated",
-    "simulation": {
-      "success": true,
-      "status": "simulated",
-      "from": "rehearsal-only",
-      "to": "0x1111111111111111111111111111111111111111",
-      "value": "0",
-      "gasEstimate": "21000",
-      "simulatedReturnValue": null,
-      "wouldRevert": false,
-      "provenance": "deterministic-local-rehearsal"
-    },
-    "executionId": null,
-    "transactionHash": null,
-    "transactionLink": null
+    "state": "completed",
+    "executionId": "unv7thoamuzxa7iodg5im",
+    "transactionHash": "0x873b3c71e7d5ef5d1b190df9119fc07e370d2a1a2a83a40d5ad87dd0465e6637",
+    "transactionLink": "https://sepolia.etherscan.io/tx/0x873b3c71e7d5ef5d1b190df9119fc07e370d2a1a2a83a40d5ad87dd0465e6637",
+    "gasUsedWei": "80521",
+    "error": null,
+    "sponsored": true,
+    "gasUsedUnits": "80521",
+    "gasPriceWei": "1092643469",
+    "retryCount": 0
   },
-  "artifactDigest": "86810d5fdd6ef2ba66ec83da0c97fa78fe8dce906aa039b47009511f55cf4071"
+  "artifactDigest": "53ae01327ed20b1f1225ee9d0acb8c27615b423817cdc47edbd1ddc5fb55d9d3"
 }

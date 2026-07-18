@@ -27,7 +27,7 @@ Agents can decide what to do, but a production agent also needs to prove that it
 
 Before a write reaches KeeperHub, KeeperGuard resolves the live chain registry and enforces a local policy over chain, value, recipient, and purpose. The default configuration only allows Ethereum Sepolia and Base Sepolia, forbids mainnet, and caps native value at zero. It then asks KeeperHub to simulate the exact intent. A reverting or policy-violating request fails closed before broadcast.
 
-For an approved write, KeeperGuard supplies an idempotency key, records the returned execution ID, and polls the canonical status endpoint using KeeperHub's `X-Poll-Interval-Hint`. The final transaction hash, explorer link, sponsorship state, and execution metadata are written to a portable evidence bundle. Each event includes the previous event's SHA-256 digest, and the complete artifact has a final digest. The bundled browser console independently verifies the chain with Web Crypto before displaying a green proof seal.
+For an approved write, KeeperGuard supplies an idempotency key, records the returned execution ID, and polls the canonical status endpoint using KeeperHub's `X-Poll-Interval-Hint`. The final transaction hash, explorer link, sponsorship state, gas metadata, and execution timestamps are written to a portable evidence bundle. Each event includes the previous event's SHA-256 digest, and the complete artifact has a final digest. The bundled browser console independently verifies the chain with Web Crypto before displaying a green proof seal.
 
 Rehearsal mode is deliberately honest: it can teach the flow without credentials, but it never fabricates an execution ID or transaction hash. A real onchain claim appears only after KeeperHub reconciliation returns a real transaction.
 
@@ -68,7 +68,7 @@ Upstream PR: https://github.com/KeeperHub/keeperhub/pull/1788
 - Evidence console: https://keeperguard-proof.a13553776411.workers.dev
 - Upstream onboarding PR: https://github.com/KeeperHub/keeperhub/pull/1788
 - Demo video: `PENDING_UNLISTED_VIDEO_URL`
-- KeeperHub transaction: `PENDING_KEEPERHUB_TRANSACTION_URL`
+- KeeperHub transaction: https://sepolia.etherscan.io/tx/0x873b3c71e7d5ef5d1b190df9119fc07e370d2a1a2a83a40d5ad87dd0465e6637
 
 ## Reviewer Runbook
 
@@ -101,7 +101,7 @@ Run the zero-value testnet intent without `--broadcast`. Show the live chain loo
 
 **0:48-1:08 - Real KeeperHub execution**
 
-Run the same intent with `--broadcast`. Show the idempotency key, KeeperHub execution ID, status polling, `sponsored: true`, and final transaction link. Open the transaction in the explorer.
+Run the same intent with `--broadcast`. Show the idempotency key, KeeperHub execution ID, status polling, canonical `sponsored: true` confirmation, and final transaction link. Open the transaction in the explorer.
 
 **1:08-1:24 - Independent proof**
 
@@ -120,12 +120,12 @@ Flash the public repository and KeeperHub PR #1788. End on: "Policy before execu
 - [x] Browser-verifiable proof format
 - [x] Automated tests
 - [x] Upstream onboarding PR
-- [ ] KeeperHub account authenticated
-- [ ] Organization wallet address inserted into the live intent
-- [ ] Authenticated simulation completed
-- [ ] Zero-value testnet transaction completed through KeeperHub
-- [ ] Live evidence verified locally and in the browser
-- [ ] Public evidence bundle replaced and redeployed
+- [x] KeeperHub account authenticated
+- [x] Organization wallet address inserted into the live intent
+- [x] Authenticated simulation completed
+- [x] Zero-value testnet transaction completed through KeeperHub
+- [x] Live evidence verified locally and in the browser
+- [x] Public evidence bundle replaced and redeployed
 - [ ] Demo video recorded and uploaded unlisted
 - [ ] DoraHacks BUIDL form completed
 - [ ] Final submission confirmed by the user

@@ -1,6 +1,6 @@
 {
   "chainId": 11155111,
-  "recipientAddress": "0x1111111111111111111111111111111111111111",
+  "recipientAddress": "0x43ceab46a1f19c82352ea056c0487edb6e55b4d8",
   "amount": "0",
   "purpose": "Prove the guarded KeeperHub execution path without moving value"
 }

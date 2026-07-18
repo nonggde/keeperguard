@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { runGuard } from "../src/agent.js";
+import { appendStatusConfirmation, runGuard } from "../src/agent.js";
 import { verifyEvidence } from "../src/evidence.js";
 
 const intent = {
@@ -81,9 +81,13 @@ test("broadcast mode simulates, executes once, then reconciles proof", async () 
         return {
           executionId: id,
           status: "completed",
-          sponsored: true,
-          transactionHash: "0xabc",
-          transactionLink: "https://sepolia.etherscan.io/tx/0xabc"
+          result: {
+            sponsored: true,
+            transactionHash: "0xabc",
+            transactionLink: "https://sepolia.etherscan.io/tx/0xabc",
+            gasUsedUnits: "80521",
+            effectiveGasPrice: "1092643469"
+          }
         };
       }
     },
@@ -94,7 +98,50 @@ test("broadcast mode simulates, executes once, then reconciles proof", async () 
   assert.equal(artifact.conclusion.state, "completed");
   assert.equal(artifact.conclusion.sponsored, true);
   assert.equal(artifact.conclusion.transactionHash, "0xabc");
+  assert.equal(artifact.conclusion.gasUsedUnits, "80521");
+  assert.equal(artifact.conclusion.gasPriceWei, "1092643469");
   assert.equal(verifyEvidence(artifact).valid, true);
+});
+
+test("appends a canonical status confirmation without rewriting prior events", async () => {
+  const original = await runGuard({
+    intent,
+    policy,
+    broadcast: true,
+    keeperhub: {
+      listChains: async () => [chain],
+      simulateTransfer: async () => ({ success: true, wouldRevert: false }),
+      executeTransfer: async () => ({ executionId: "direct-refresh", status: "completed" }),
+      waitForExecution: async () => ({
+        executionId: "direct-refresh",
+        status: "completed",
+        transactionHash: "0xdef",
+        transactionLink: "https://sepolia.etherscan.io/tx/0xdef"
+      })
+    },
+    runId: "refresh-run"
+  });
+  const originalEvents = structuredClone(original.events);
+  const refreshed = appendStatusConfirmation({
+    artifact: original,
+    status: {
+      executionId: "direct-refresh",
+      status: "completed",
+      result: {
+        sponsored: true,
+        transactionHash: "0xdef",
+        transactionLink: "https://sepolia.etherscan.io/tx/0xdef",
+        gasUsedUnits: "80521"
+      }
+    },
+    now: () => new Date("2026-07-19T00:00:00.000Z")
+  });
+  assert.deepEqual(refreshed.events.slice(0, -1), originalEvents);
+  assert.equal(refreshed.events.at(-1).type, "keeperhub_status_confirmed");
+  assert.equal(refreshed.conclusion.sponsored, true);
+  assert.equal(refreshed.conclusion.gasUsedUnits, "80521");
+  assert.notEqual(refreshed.artifactDigest, original.artifactDigest);
+  assert.equal(verifyEvidence(refreshed).valid, true);
 });
 
 test("a reverting simulation prevents broadcast", async () => {

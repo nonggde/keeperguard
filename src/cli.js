@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { parseArgs } from "node:util";
-import { runGuard, resumeGuard } from "./agent.js";
+import { appendStatusConfirmation, runGuard, resumeGuard } from "./agent.js";
 import { verifyEvidence } from "./evidence.js";
 import { KeeperHubClient, RehearsalKeeperHubClient } from "./keeperhub.js";
 
@@ -95,6 +95,19 @@ async function runResume() {
   print(await resumeGuard({ keeperhub: clientFromEnvironment(), executionId, timeoutMs: Number(parsed.values.timeout) }));
 }
 
+async function runRefresh() {
+  const parsed = options({ timeout: { type: "string", default: "120000" } });
+  const file = parsed.positionals[0];
+  if (!file) throw new Error("refresh requires an evidence file");
+  const artifact = await readJson(file);
+  const executionId = artifact.conclusion?.executionId;
+  if (!executionId) throw new Error("evidence does not contain an execution ID");
+  const status = await resumeGuard({ keeperhub: clientFromEnvironment(), executionId, timeoutMs: Number(parsed.values.timeout) });
+  const refreshed = appendStatusConfirmation({ artifact, status });
+  const evidence = await writeEvidence(refreshed);
+  print({ state: refreshed.conclusion.state, executionId, sponsored: refreshed.conclusion.sponsored, transactionLink: refreshed.conclusion.transactionLink, evidence, artifactDigest: refreshed.artifactDigest });
+}
+
 async function runVerify() {
   const parsed = options();
   const file = parsed.positionals[0];
@@ -119,7 +132,7 @@ async function runStage() {
 }
 
 function showHelp() {
-  process.stdout.write(`KeeperGuard\n\nCommands:\n  demo\n  doctor\n  run --intent <file> [--policy <file>] [--broadcast]\n  resume <executionId> [--timeout <ms>]\n  verify <evidence.json>\n  stage <evidence.json>\n  serve\n`);
+  process.stdout.write(`KeeperGuard\n\nCommands:\n  demo\n  doctor\n  run --intent <file> [--policy <file>] [--broadcast]\n  resume <executionId> [--timeout <ms>]\n  refresh <evidence.json> [--timeout <ms>]\n  verify <evidence.json>\n  stage <evidence.json>\n  serve\n`);
 }
 
 try {
@@ -127,6 +140,7 @@ try {
   else if (command === "doctor") await runDoctor();
   else if (command === "run") await runIntent();
   else if (command === "resume") await runResume();
+  else if (command === "refresh") await runRefresh();
   else if (command === "verify") await runVerify();
   else if (command === "stage") await runStage();
   else if (command === "help" || command === "--help" || command === "-h") showHelp();

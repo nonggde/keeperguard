@@ -11,7 +11,7 @@ const elements = {
   state: document.querySelector("#metric-state"),
   execution: document.querySelector("#metric-execution"),
   transaction: document.querySelector("#metric-transaction"),
-  sponsored: document.querySelector("#metric-sponsored"),
+  executionMeta: document.querySelector("#metric-execution-meta"),
   digest: document.querySelector("#artifact-digest"),
   copy: document.querySelector("#copy-digest"),
   decision: document.querySelector("#guard-decision"),
@@ -142,7 +142,11 @@ async function render(artifact) {
   text(elements.asset, `${artifact.chain?.symbol || "native"} / ${artifact.chain?.isTestnet ? "testnet" : "network"}`);
   text(elements.state, state.toUpperCase());
   text(elements.execution, artifact.conclusion?.executionId || "not submitted");
-  text(elements.sponsored, artifact.conclusion?.sponsored === undefined ? "sponsorship --" : `sponsored ${artifact.conclusion.sponsored ? "yes" : "no"}`);
+  const executionMeta = [];
+  if (artifact.conclusion?.sponsored !== undefined) executionMeta.push(`sponsored ${artifact.conclusion.sponsored ? "yes" : "no"}`);
+  const gasUsed = artifact.conclusion?.gasUsedUnits ?? artifact.conclusion?.gasUsedWei;
+  if (gasUsed !== undefined) executionMeta.push(`gas ${gasUsed}`);
+  text(elements.executionMeta, executionMeta.join(" / "), "execution metadata --");
   elements.transaction.removeAttribute("href");
   elements.transaction.textContent = "Not available";
   if (isClaimedTransaction && /^https:\/\//.test(artifact.conclusion.transactionLink)) {

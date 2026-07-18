@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { EvidenceTrail, digest } from "./evidence.js";
+import { EvidenceTrail, digest, verifyEvidence } from "./evidence.js";
 import { evaluateIntent, normalizePolicy } from "./policy.js";
 
 function publicChainSnapshot(chain) {
@@ -16,14 +16,19 @@ function publicChainSnapshot(chain) {
 
 function publicStatus(status) {
   if (!status) return null;
+  const result = status.result || {};
+  const gasUsedUnits = status.gasUsedUnits ?? result.gasUsedUnits ?? result.gasUsed ?? status.gasUsedWei;
   return {
     executionId: status.executionId,
     status: status.status,
     type: status.type,
-    sponsored: status.sponsored,
-    transactionHash: status.transactionHash,
-    transactionLink: status.transactionLink,
-    gasUsedWei: status.gasUsedWei,
+    sponsored: status.sponsored ?? result.sponsored,
+    transactionHash: status.transactionHash ?? result.transactionHash,
+    transactionLink: status.transactionLink ?? result.transactionLink,
+    gasUsedUnits,
+    gasUsedWei: status.gasUsedWei ?? gasUsedUnits,
+    gasPriceWei: status.gasPriceWei ?? result.effectiveGasPrice,
+    retryCount: status.retryCount,
     error: status.error || null,
     createdAt: status.createdAt,
     completedAt: status.completedAt
@@ -119,13 +124,58 @@ export async function runGuard({
     conclusion: {
       state: status.status,
       executionId: status.executionId || submitted.executionId,
-      sponsored: status.sponsored,
-      transactionHash: status.transactionHash || null,
-      transactionLink: status.transactionLink || null,
-      gasUsedWei: status.gasUsedWei,
-      error: status.error || null
+      sponsored: statusSnapshot.sponsored,
+      transactionHash: statusSnapshot.transactionHash || null,
+      transactionLink: statusSnapshot.transactionLink || null,
+      gasUsedUnits: statusSnapshot.gasUsedUnits,
+      gasUsedWei: statusSnapshot.gasUsedWei,
+      gasPriceWei: statusSnapshot.gasPriceWei,
+      retryCount: statusSnapshot.retryCount,
+      error: statusSnapshot.error
     }
   });
+}
+
+export function appendStatusConfirmation({ artifact, status, now = () => new Date() }) {
+  const verification = verifyEvidence(artifact);
+  if (!verification.valid) throw new Error(`Cannot refresh invalid evidence: ${verification.errors.join(", ")}`);
+
+  const statusSnapshot = publicStatus(status);
+  const executionId = artifact.conclusion?.executionId;
+  if (!executionId || statusSnapshot?.executionId !== executionId) {
+    throw new Error("KeeperHub status does not match the evidence execution ID");
+  }
+
+  const events = [...artifact.events];
+  const event = {
+    sequence: events.length + 1,
+    at: now().toISOString(),
+    type: "keeperhub_status_confirmed",
+    data: statusSnapshot,
+    previousDigest: events.at(-1)?.digest || null
+  };
+  event.digest = digest(event);
+  events.push(event);
+
+  const { artifactDigest: _previousArtifactDigest, ...base } = artifact;
+  const refreshed = {
+    ...base,
+    events,
+    conclusion: {
+      ...artifact.conclusion,
+      state: statusSnapshot.status,
+      executionId: statusSnapshot.executionId,
+      sponsored: statusSnapshot.sponsored,
+      transactionHash: statusSnapshot.transactionHash || null,
+      transactionLink: statusSnapshot.transactionLink || null,
+      gasUsedUnits: statusSnapshot.gasUsedUnits,
+      gasUsedWei: statusSnapshot.gasUsedWei,
+      gasPriceWei: statusSnapshot.gasPriceWei,
+      retryCount: statusSnapshot.retryCount,
+      error: statusSnapshot.error
+    }
+  };
+  return { ...refreshed, artifactDigest: digest(refreshed) };
 }
 
 export async function resumeGuard({ keeperhub, executionId, timeoutMs = 120_000, wait }) {

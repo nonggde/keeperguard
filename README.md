@@ -6,7 +6,7 @@ The default policy cannot move value: it permits only Ethereum Sepolia and Base 
 
 **Live evidence console:** https://keeperguard-proof.a13553776411.workers.dev
 
-The staged public bundle is currently marked `rehearsal / simulated`. It will be replaced only after a real KeeperHub execution passes local and browser verification.
+The staged public bundle is a verified `live / completed` KeeperHub execution on Ethereum Sepolia. It records a zero-value self-transfer, the reconciled execution ID, and the canonical transaction link without exposing credentials.
 
 ## Why this exists
 
@@ -108,6 +108,14 @@ If the client closes after KeeperHub returns an execution ID, reconciliation can
 node src/cli.js resume direct_execution_id
 ```
 
+To append a fresh canonical KeeperHub status confirmation to an existing evidence chain without broadcasting again:
+
+```bash
+node --env-file=.env src/cli.js refresh artifacts/evidence-run-id.json
+```
+
+`refresh` verifies the original artifact first, fetches the matching execution ID, appends a linked status event, and recalculates the final digest. Existing events are preserved byte-for-byte.
+
 ## Verify and stage evidence
 
 Every evidence event contains the digest of the previous event. The artifact also has a final digest over the complete bundle.
@@ -147,7 +155,7 @@ KeeperGuard targets the KeeperHub Agents Onchain judging criteria directly:
 - **Developer experience:** a dependency-free starter with safe defaults and a browser-verifiable proof.
 - **Onboarding:** a new builder can rehearse without credentials, simulate with a key, and make a zero-value testnet execution without risking principal.
 
-The repository does not present a mock hash as an onchain result. The public evidence bundle will be replaced with a verified KeeperHub transaction after the hackathon opens.
+The repository does not present a mock hash as an onchain result. Its public evidence bundle is backed by a verified KeeperHub execution and a real Ethereum Sepolia transaction.
 
 ## License
 
